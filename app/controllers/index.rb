@@ -1,5 +1,5 @@
 get '/' do
-  # render home page
+  @users = User.all# render home page
  #TODO: Show all users if user is signed in
   erb :index
 end
