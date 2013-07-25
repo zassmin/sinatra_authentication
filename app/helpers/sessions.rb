@@ -1,7 +1,10 @@
 helpers do
 
   def current_user
-    # TODO: return the current user if there is a user signed in.
+    @current_user ||= User.find_by_id(session[:id])
   end
-
+  
+  def login_by_creating_session(user)
+    session[:id] = user.id
+  end
 end
