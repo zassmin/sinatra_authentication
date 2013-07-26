@@ -21,12 +21,4 @@ class User < ActiveRecord::Base
     @password = Password.create(new_password)
     self.password_hash = @password
   end
-
-  # def self.authenticate(email, password)
-  #   user = find_by_email(email)
-  #   p "this is user #{user}"
-  #   return user if user.password == password ## this is where bcrypt overrid == so that this could return true or false against the encrypted version
-  #     p "this is user inside of password boolean #{user}"
-  #   nil
-  # end
 end

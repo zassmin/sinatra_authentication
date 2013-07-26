@@ -9,6 +9,7 @@ end
 get '/sessions/new' do
   @user = User.new
   @error = nil
+  
   # render sign-in page 
   erb :sign_in
 end 
@@ -18,7 +19,7 @@ post '/sessions' do
   @user = User.find_by_email(params[:email])
   
   if @user.password == params[:password]
-    login_by_creating_session(user)
+    login_by_creating_session(@user)
     redirect '/'
   else
     @error = "your account info is incorrect"
@@ -40,7 +41,6 @@ get '/users/new' do
 end
 
 post '/users' do
-  p "these are the user params #{params}"
   user = User.new(name: params[:user][:name], email: params[:user][:email])
   user.password = params[:user][:password]
   user.save
