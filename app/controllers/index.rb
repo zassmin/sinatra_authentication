@@ -1,22 +1,35 @@
 get '/' do
-  @users = User.all# render home page
- #TODO: Show all users if user is signed in
+  @users = User.all
+  # render home page
   erb :index
 end
 
 #----------- SESSIONS -----------
 
 get '/sessions/new' do
+  @user = User.new
+  @error = nil
   # render sign-in page 
   erb :sign_in
-end
+end 
 
 post '/sessions' do
   # sign-in
+  @user = User.find_by_email(params[:email])
+  
+  if @user.password == params[:password]
+    login_by_creating_session(user)
+    redirect '/'
+  else
+    @error = "your account info is incorrect"
+    erb :sign_in
+  end
 end
 
 delete '/sessions/:id' do
+  session.clear
   # sign-out -- invoked via AJAX
+  # redirect '/'
 end
 
 #----------- USERS -----------
@@ -27,5 +40,12 @@ get '/users/new' do
 end
 
 post '/users' do
-  # sign-up a new user
+  p "these are the user params #{params}"
+  user = User.new(name: params[:user][:name], email: params[:user][:email])
+  user.password = params[:user][:password]
+  user.save
+  
+  login_by_creating_session(user)
+  
+  redirect '/'
 end
